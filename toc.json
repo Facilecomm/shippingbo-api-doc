@@ -1,0 +1,57 @@
+{
+  "items": [
+    {
+      "type": "divider",
+      "title": "Good Practices"
+    },
+    {
+      "type": "item",
+      "title": "Authentication",
+      "uri": "/docs/Good Practices/authentication.md"
+    },
+    {
+      "type": "group",
+      "title": "Order source",
+      "items": [
+        {
+          "type": "item",
+          "title": "How to connect an order source ?",
+          "uri": "/docs/Good Practices/Order source/Connect-order-source.md"
+        },
+        {
+          "type": "item",
+          "title": "Join an invoice to an Order",
+          "uri": "/docs/Good Practices/Order source/join-invoice.md"
+        },
+        {
+          "type": "item",
+          "title": "Product synchronisation",
+          "uri": "/docs/Good Practices/Order source/product-sync.md"
+        },
+        {
+          "type": "item",
+          "title": "Stock synchronisation",
+          "uri": "/docs/Good Practices/Order source/stock-sync.md"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "title": "Webhooks"
+    },
+    {
+      "type": "item",
+      "title": "Order webhook",
+      "uri": "/docs/Webhooks/Webhooks.md"
+    },
+    {
+      "type": "divider",
+      "title": "APIS"
+    },
+    {
+      "type": "item",
+      "title": "Shipping API V1",
+      "uri": "/reference/Shipping-API-V1.json"
+    }
+  ]
+}

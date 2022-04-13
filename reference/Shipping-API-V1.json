@@ -1,0 +1,603 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "title": "Shipping API V1",
+    "version": "1.0"
+  },
+  "schemes": [
+    "https"
+  ],
+  "produces": [
+    "application/json"
+  ],
+  "consumes": [
+    "application/json"
+  ],
+  "paths": {
+    "/orders": {
+      "post": {
+        "summary": "",
+        "operationId": "Create an order",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            },
+            "examples": {
+              "MyOrder": {
+                "id": 1,
+                "source": "My Website",
+                "source_ref": "123",
+                "shipping_address_id": 1,
+                "billing_address_id": 2,
+                "origin": "My Websit",
+                "origin_ref": "123",
+                "origin_created_at": "2019-08-24T14:15:22Z",
+                "chosen_delivery_service": "Fedex",
+                "earliest_delivery_at": "2019-08-24T14:15:22Z",
+                "latest_delivery_at": "2019-08-24T14:15:22Z",
+                "earliest_shipped_at": "2019-08-24T14:15:22Z",
+                "latest_shipped_at": "2019-08-24T14:15:22Z",
+                "earliest_chosen_delivery_at": "2019-08-24T14:15:22Z",
+                "latest_chosen_delivery_at": "2019-08-24T14:15:22Z",
+                "order_item_attributes": [
+                  {
+                    "product_ref": "my-product-sku-001",
+                    "title": "My fabulous product",
+                    "quantity": 1,
+                    "source": "My Website",
+                    "source_ref": "123-1"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "x-internal": true,
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            },
+            "x-examples": {
+              "MyOrder": {
+                "source": "My Website",
+                "source_ref": "123",
+                "shipping_address_id": 1,
+                "billing_address_id": 2,
+                "origin": "My Websit",
+                "origin_ref": "123",
+                "origin_created_at": "2019-08-24T14:15:22Z",
+                "chosen_delivery_service": "Fedex",
+                "earliest_delivery_at": "2019-08-24T14:15:22Z",
+                "latest_delivery_at": "2019-08-24T14:15:22Z",
+                "earliest_shipped_at": "2019-08-24T14:15:22Z",
+                "latest_shipped_at": "2019-08-24T14:15:22Z",
+                "earliest_chosen_delivery_at": "2019-08-24T14:15:22Z",
+                "latest_chosen_delivery_at": "2019-08-24T14:15:22Z",
+                "order_item_attributes": [
+                  {
+                    "product_ref": "my-product-sku-001",
+                    "title": "My fabulous product",
+                    "quantity": 1,
+                    "source": "My Website",
+                    "source_ref": "123-1"
+                  }
+                ]
+              }
+            }
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "X-API-TOKEN"
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "X-API-USER"
+          }
+        ]
+      }
+    },
+    "/addresses": {
+      "post": {
+        "summary": "",
+        "operationId": "Create an address",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Address"
+            },
+            "examples": {
+              "Shippingbo": {
+                "id": 1,
+                "city": "Toulouse",
+                "zip": "31400",
+                "firstname": "John",
+                "lastname": "Doe",
+                "instructions": null,
+                "phone1": "0102030405",
+                "phone2": "0501020304",
+                "email": "john.doe@exemple.com",
+                "street1": "3 avenue de l'europe",
+                "street2": null,
+                "street3": null,
+                "country": "FR",
+                "company_name": "Shippingbo"
+              }
+            },
+            "headers": {
+              "X-API-USER": {
+                "type": "string",
+                "description": "my.user@exemple.com"
+              }
+            }
+          }
+        },
+        "description": "",
+        "x-internal": true,
+        "parameters": [
+          {
+            "type": "string",
+            "in": "header",
+            "name": "X-API-TOKEN"
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "X-API-USER"
+          },
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "city": "Toulouse",
+                  "zip": "31400",
+                  "firstname": "John",
+                  "lastname": "Doe",
+                  "instructions": null,
+                  "phone1": "0102030405",
+                  "phone2": "0501020304",
+                  "email": "john.doe@exemple.com",
+                  "street1": "3 avenue de l'europe",
+                  "street2": null,
+                  "street3": null,
+                  "country": "FR",
+                  "company_name": "Shippingbo"
+                }
+              },
+              "properties": {
+                "city": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "zip": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "firstname": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "lastname": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "instructions": {},
+                "phone1": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "phone2": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "email": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "street1": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "street2": {},
+                "street3": {},
+                "country": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "company_name": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "city",
+                "zip",
+                "firstname",
+                "lastname",
+                "phone1",
+                "phone2",
+                "email",
+                "street1",
+                "country"
+              ]
+            },
+            "x-examples": {
+              "example-1": {
+                "city": "string",
+                "zip": "string",
+                "firstname": "string",
+                "lastname": "string",
+                "instructions": null,
+                "phone1": "string",
+                "phone2": "string",
+                "email": "string",
+                "street1": "string",
+                "street2": null,
+                "street3": null,
+                "country": "string",
+                "company_name": "string"
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/uploaded_files": {
+      "post": {
+        "summary": "",
+        "operationId": "post-uploaded_files",
+        "parameters": [
+          {
+            "type": "string",
+            "in": "header",
+            "name": "X-API-TOKEN"
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "X-API-USER"
+          }
+        ]
+      }
+    },
+    "/order_documents": {
+      "post": {
+        "summary": "",
+        "operationId": "post-order_documents",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "example-1": {}
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "order_id": "",
+                  "uploaded_file_id": "",
+                  "language": "fr",
+                  "type": "OrderDocument::ExternalInvoice"
+                }
+              },
+              "properties": {
+                "order_id": {
+                  "type": "integer"
+                },
+                "uploaded_file_id": {
+                  "type": "integer"
+                },
+                "language": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "type": {
+                  "type": "string",
+                  "minLength": 1
+                }
+              },
+              "required": [
+                "order_id",
+                "uploaded_file_id",
+                "language",
+                "type"
+              ]
+            },
+            "x-examples": {
+              "Example": {
+                "order_id": 1,
+                "uploaded_file_id": 1,
+                "language": "fr",
+                "type": "OrderDocument::ExternalInvoice"
+              }
+            }
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "X-API-TOKEN"
+          },
+          {
+            "type": "string",
+            "in": "header",
+            "name": "X-API-USER"
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "Address": {
+      "title": "Address",
+      "type": "object",
+      "description": "Address object is used for billing and shipping address, must be created before create an order",
+      "x-examples": {
+        "example-1": {
+          "id": 0,
+          "city": "string",
+          "zip": "string",
+          "firstname": "string",
+          "lastname": "string",
+          "instructions": "string",
+          "phone1": "string",
+          "": "string"
+        }
+      },
+      "x-internal": true,
+      "properties": {
+        "id": {
+          "type": "integer",
+          "readOnly": true
+        },
+        "city": {
+          "type": "string"
+        },
+        "zip": {
+          "type": "string"
+        },
+        "firstname": {
+          "type": "string"
+        },
+        "lastname": {
+          "type": "string"
+        },
+        "instructions": {
+          "type": "string"
+        },
+        "phone1": {
+          "type": "string"
+        },
+        "phone2": {
+          "type": "string"
+        },
+        "email": {
+          "type": "string"
+        },
+        "street1": {
+          "type": "string"
+        },
+        "street2": {
+          "type": "string"
+        },
+        "street3": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string"
+        },
+        "country": {
+          "type": "string"
+        },
+        "company_name": {
+          "type": "string"
+        },
+        "apartement_number": {
+          "type": "string"
+        },
+        "eori_importer": {
+          "type": "string"
+        },
+        "vat_importer": {
+          "type": "string"
+        }
+      }
+    },
+    "Order": {
+      "title": "Order",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "source": {
+          "type": "string",
+          "description": "The field must be capitalized"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "shipping_address_id": {
+          "type": "integer"
+        },
+        "billing_address_id": {
+          "type": "integer"
+        },
+        "origin": {
+          "type": "string"
+        },
+        "origin_ref": {
+          "type": "string"
+        },
+        "origin_created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "chosen_delivery_service": {
+          "type": "string"
+        },
+        "earliest_delivery_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "latest_delivery_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "earliest_shipped_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "latest_shipped_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "relay_ref": {
+          "type": "string"
+        },
+        "earliest_chosen_delivery_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "latest_chosen_delivery_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "order_item_attributes": {
+          "type": "array",
+          "description": "When you create an OrderItem you have to remove the id from the object. The id will be returned by the API",
+          "items": {
+            "$ref": "#/definitions/OrderItem"
+          }
+        }
+      },
+      "required": [
+        "source",
+        "source_ref",
+        "shipping_address_id",
+        "origin",
+        "origin_ref",
+        "origin_created_at",
+        "order_item_attributes"
+      ],
+      "description": "The Order model",
+      "x-internal": true
+    },
+    "OrderItem": {
+      "title": "OrderItem",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "product_ref": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "string"
+        },
+        "product_ean": {
+          "type": "string"
+        },
+        "product_source": {
+          "type": "string"
+        },
+        "product_source_ref": {
+          "type": "string"
+        },
+        "source": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        }
+      },
+      "x-internal": true
+    },
+    "UploadedFile": {
+      "title": "UploadedFile",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "x-examples": {}
+    },
+    "OrderDocument": {
+      "title": "OrderDocument",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "order_id": {
+          "type": "integer"
+        },
+        "uploaded_file_id": {
+          "type": "integer"
+        },
+        "type": {
+          "type": "string"
+        },
+        "language": {
+          "type": "string"
+        },
+        "package_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "error_message": {
+          "type": "string"
+        }
+      }
+    }
+  },
+  "securityDefinitions": {
+    "Api Token": {
+      "name": "X-API-TOKEN",
+      "type": "apiKey",
+      "in": "header",
+      "description": ""
+    },
+    "API login": {
+      "name": "X-API-USER",
+      "type": "apiKey",
+      "in": "header",
+      "description": ""
+    }
+  },
+  "host": "app.shippingbo.com",
+  "responses": {},
+  "parameters": {}
+}
