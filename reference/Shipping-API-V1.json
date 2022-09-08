@@ -16,8 +16,8 @@
   "paths": {
     "/orders": {
       "post": {
-        "summary": "",
-        "operationId": "Create an order",
+        "summary": "Create an Order",
+        "operationId": "orders",
         "responses": {
           "200": {
             "description": "OK",
@@ -54,7 +54,7 @@
             }
           }
         },
-        "x-internal": true,
+        "x-internal": false,
         "parameters": [
           {
             "in": "body",
@@ -63,7 +63,7 @@
               "$ref": "#/definitions/Order"
             },
             "x-examples": {
-              "MyOrder": {
+              "With invoicing": {
                 "source": "My Website",
                 "source_ref": "123",
                 "shipping_address_id": 1,
@@ -78,13 +78,22 @@
                 "latest_shipped_at": "2019-08-24T14:15:22Z",
                 "earliest_chosen_delivery_at": "2019-08-24T14:15:22Z",
                 "latest_chosen_delivery_at": "2019-08-24T14:15:22Z",
+                "total_price_cents": 1500,
+                "total_price_currency": "EUR",
+                "total_tax_cents": 500,
+                "total_shipping_tax_included_cents": 10,
+                "total_shipping_tax_cents": 20,
                 "order_item_attributes": [
                   {
                     "product_ref": "my-product-sku-001",
                     "title": "My fabulous product",
                     "quantity": 1,
                     "source": "My Website",
-                    "source_ref": "123-1"
+                    "source_ref": "123-1",
+                    "price_tax_included_cents": 1490,
+                    "price_tax_included_currency": "EUR",
+                    "tax_cents": 480,
+                    "tax_currency": "EUR"
                   }
                 ]
               }
@@ -100,13 +109,15 @@
             "in": "header",
             "name": "X-API-USER"
           }
-        ]
-      }
+        ],
+        "description": "Create an Order in Shippingbo"
+      },
+      "parameters": []
     },
     "/addresses": {
       "post": {
-        "summary": "",
-        "operationId": "Create an address",
+        "summary": "Create an Address",
+        "operationId": "addresses",
         "responses": {
           "200": {
             "description": "OK",
@@ -120,7 +131,7 @@
                 "zip": "31400",
                 "firstname": "John",
                 "lastname": "Doe",
-                "instructions": null,
+                "instructions": "",
                 "phone1": "0102030405",
                 "phone2": "0501020304",
                 "email": "john.doe@exemple.com",
@@ -139,8 +150,8 @@
             }
           }
         },
-        "description": "",
-        "x-internal": true,
+        "description": "Can be use as ShippingAddress or BillingAddress",
+        "x-internal": false,
         "parameters": [
           {
             "type": "string",
@@ -255,8 +266,8 @@
     },
     "/uploaded_files": {
       "post": {
-        "summary": "",
-        "operationId": "post-uploaded_files",
+        "summary": "Create an UploadedFile",
+        "operationId": "uploaded_files",
         "parameters": [
           {
             "type": "string",
@@ -268,13 +279,14 @@
             "in": "header",
             "name": "X-API-USER"
           }
-        ]
+        ],
+        "description": "Usefull to store a document on Shippingbo before use it as an invoice, CN23, proforma invoice or dematerialized document"
       }
     },
     "/order_documents": {
       "post": {
-        "summary": "",
-        "operationId": "post-order_documents",
+        "summary": "Create an OrderDocument",
+        "operationId": "order_documents",
         "responses": {
           "200": {
             "description": "OK",
@@ -340,6 +352,1269 @@
             "in": "header",
             "name": "X-API-USER"
           }
+        ],
+        "description": "It allows to link an UploadedFile to an Order, then can be printed with the shipping label or send to the carrier in case of dematerialized documents"
+      }
+    },
+    "/order/{orderId}": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "orderId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get an Order",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "description": "",
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "id": 980191365,
+                  "created_at": "2022-04-05T14:55:25+00:00",
+                  "updated_at": "2022-04-05T14:55:45+00:00",
+                  "source": "Shippingbo",
+                  "source_ref": "0506a7b4-93b2-4d71-9011-d2ba235d847d-bis-1-bis-1-bis-3-bis-1-bis-1-bis-1-bis-1-bis-1-bis-2-bis-1-bis-1-bis-1-bis-1-bis-2-bis-1-bis-1",
+                  "state": "to_be_prepared",
+                  "origin": "Amazon.fr",
+                  "origin_ref": "a@a.a",
+                  "shipping_address_id": 1014264596,
+                  "custom_state": "unknown",
+                  "origin_created_at": "2022-04-05T14:55:25+00:00",
+                  "shipped_at": null,
+                  "closed_at": null,
+                  "state_changed_at": "2022-04-05T14:55:45+00:00",
+                  "earliest_shipped_at": "2022-03-01T10:34:25+00:00",
+                  "latest_shipped_at": null,
+                  "earliest_delivery_at": null,
+                  "latest_delivery_at": null,
+                  "latest_chosen_delivery_at": null,
+                  "earliest_chosen_delivery_at": null,
+                  "chosen_delivery_service": null,
+                  "relay_ref": null,
+                  "total_price_cents": null,
+                  "total_without_tax_cents": null,
+                  "total_tax_cents": null,
+                  "total_price_currency": "EUR",
+                  "total_shipping_tax_included_cents": 0,
+                  "total_shipping_cents": null,
+                  "total_shipping_tax_cents": null,
+                  "total_shipping_tax_included_currency": "EUR",
+                  "total_discount_tax_included_cents": 0,
+                  "total_discount_tax_included_currency": "EUR",
+                  "total_weight": 100,
+                  "order_items": [
+                    {
+                      "id": 1004159369,
+                      "created_at": "2022-04-05T14:55:26+00:00",
+                      "updated_at": "2022-04-05T14:55:26+00:00",
+                      "source": "980191362-0",
+                      "source_ref": null,
+                      "product_ref": "product1",
+                      "product_ean": null,
+                      "title": "Titre product1",
+                      "quantity": 1,
+                      "price_tax_included_cents": null,
+                      "price_cents": null,
+                      "tax_cents": null,
+                      "price_tax_included_currency": "EUR",
+                      "shipping_price_tax_included_cents": null,
+                      "shipping_price_cents": null,
+                      "shipping_tax_cents": null,
+                      "shipping_price_tax_included_currency": null,
+                      "supplier_order_items": [],
+                      "matching_product": null
+                    },
+                    {
+                      "id": 1004159370,
+                      "created_at": "2022-04-05T14:55:26+00:00",
+                      "updated_at": "2022-04-05T14:55:26+00:00",
+                      "source": "980191362-1",
+                      "source_ref": null,
+                      "product_ref": "product2",
+                      "product_ean": null,
+                      "title": "product2",
+                      "quantity": 3,
+                      "price_tax_included_cents": 0,
+                      "price_cents": null,
+                      "tax_cents": null,
+                      "price_tax_included_currency": "EUR",
+                      "shipping_price_tax_included_cents": null,
+                      "shipping_price_cents": null,
+                      "shipping_tax_cents": null,
+                      "shipping_price_tax_included_currency": null,
+                      "supplier_order_items": [],
+                      "matching_product": null
+                    }
+                  ],
+                  "order_tags": [],
+                  "mapped_products": [
+                    {
+                      "id": 713,
+                      "created_at": "2022-04-05T14:55:26+00:00",
+                      "updated_at": "2022-04-05T14:55:26+00:00",
+                      "order_item_id": 1004159369,
+                      "product_id": 922957070,
+                      "quantity": 1,
+                      "product_user_ref": "product1"
+                    },
+                    {
+                      "id": 714,
+                      "created_at": "2022-04-05T14:55:26+00:00",
+                      "updated_at": "2022-04-05T14:55:26+00:00",
+                      "order_item_id": 1004159370,
+                      "product_id": 922957071,
+                      "quantity": 3,
+                      "product_user_ref": "product2"
+                    }
+                  ],
+                  "shipments": [],
+                  "shipping_address": {
+                    "id": 1014264596,
+                    "created_at": "2022-04-05T14:55:25+00:00",
+                    "updated_at": "2022-04-05T14:55:25+00:00",
+                    "civility": null,
+                    "fullname": null,
+                    "firstname": "Raphaël",
+                    "lastname": "BELLOC",
+                    "street1": "Rda. de Valencia, 2",
+                    "street2": null,
+                    "street3": null,
+                    "street4": null,
+                    "city": "Madrid",
+                    "zip": "28012",
+                    "state": null,
+                    "country": "FR",
+                    "email": "test@test.com",
+                    "phone1": "0761305958",
+                    "phone2": null,
+                    "instructions": null,
+                    "building": null,
+                    "company_name": null,
+                    "apartment_number": null,
+                    "place_name": null,
+                    "vat_importer": null
+                  },
+                  "billing_address": {
+                    "id": 1014264588,
+                    "created_at": "2022-03-28T12:32:28+00:00",
+                    "updated_at": "2022-03-28T12:32:28+00:00",
+                    "civility": null,
+                    "fullname": null,
+                    "firstname": "Raphaël",
+                    "lastname": "BELLOC",
+                    "street1": "Rda. de Valencia, 2",
+                    "street2": null,
+                    "street3": null,
+                    "street4": null,
+                    "city": "Madrid",
+                    "zip": "28012",
+                    "state": null,
+                    "country": "FR",
+                    "email": "test@test.com",
+                    "phone1": "0761305958",
+                    "phone2": null,
+                    "instructions": null,
+                    "building": null,
+                    "company_name": null,
+                    "apartment_number": null,
+                    "place_name": null,
+                    "vat_importer": null
+                  },
+                  "initial_order_id": null
+                }
+              },
+              "properties": {
+                "id": {
+                  "type": "number"
+                },
+                "created_at": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "updated_at": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "source_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "state": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "origin": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "origin_ref": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "shipping_address_id": {
+                  "type": "integer"
+                },
+                "custom_state": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "origin_created_at": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "shipped_at": {},
+                "closed_at": {},
+                "state_changed_at": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "earliest_shipped_at": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "latest_shipped_at": {},
+                "earliest_delivery_at": {},
+                "latest_delivery_at": {},
+                "latest_chosen_delivery_at": {},
+                "earliest_chosen_delivery_at": {},
+                "chosen_delivery_service": {},
+                "relay_ref": {},
+                "total_price_cents": {},
+                "total_without_tax_cents": {},
+                "total_tax_cents": {},
+                "total_price_currency": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "total_shipping_tax_included_cents": {
+                  "type": "number"
+                },
+                "total_shipping_cents": {},
+                "total_shipping_tax_cents": {},
+                "total_shipping_tax_included_currency": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "total_discount_tax_included_cents": {
+                  "type": "number"
+                },
+                "total_discount_tax_included_currency": {
+                  "type": "string",
+                  "minLength": 1
+                },
+                "total_weight": {
+                  "type": "number"
+                },
+                "order_items": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "source": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "source_ref": {},
+                      "product_ref": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "product_ean": {},
+                      "title": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "quantity": {
+                        "type": "number"
+                      },
+                      "price_tax_included_cents": {},
+                      "price_cents": {},
+                      "tax_cents": {},
+                      "price_tax_included_currency": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "shipping_price_tax_included_cents": {},
+                      "shipping_price_cents": {},
+                      "shipping_tax_cents": {},
+                      "shipping_price_tax_included_currency": {},
+                      "supplier_order_items": {
+                        "type": "array",
+                        "items": {
+                          "type": "object"
+                        }
+                      },
+                      "matching_product": {}
+                    }
+                  }
+                },
+                "order_tags": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "mapped_products": {
+                  "type": "array",
+                  "uniqueItems": true,
+                  "minItems": 1,
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "number"
+                      },
+                      "created_at": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "updated_at": {
+                        "type": "string",
+                        "minLength": 1
+                      },
+                      "order_item_id": {
+                        "type": "number"
+                      },
+                      "product_id": {
+                        "type": "number"
+                      },
+                      "quantity": {
+                        "type": "number"
+                      },
+                      "product_user_ref": {
+                        "type": "string",
+                        "minLength": 1
+                      }
+                    }
+                  }
+                },
+                "shipments": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                },
+                "shipping_address": {
+                  "$ref": "#/definitions/Address"
+                },
+                "billing_address": {
+                  "$ref": "#/definitions/Address"
+                },
+                "initial_order_id": {}
+              },
+              "required": [
+                "id"
+              ]
+            }
+          }
+        },
+        "operationId": "Order",
+        "description": "Returns main information of an Order"
+      }
+    },
+    "/products": {
+      "post": {
+        "summary": "Create a Product",
+        "operationId": "Products",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "examples": {
+              "Creation response example": {
+                "id": 172369838,
+                "created_at": "2020-06-26T12:16:37+00:00",
+                "updated_at": "2021-11-29T15:40:12+00:00",
+                "source": "Goldenfeather",
+                "source_ref": "22",
+                "user_ref": "sku-golden-feather-22",
+                "stock": 0,
+                "ean13": "1234567891234",
+                "title": "My super product",
+                "location": "A1",
+                "picture_url": "https://picture.exemple.com/pic.png",
+                "weight": 200,
+                "height": 150,
+                "length": 150,
+                "width": 150,
+                "hs_code": "312645",
+                "supplier": null,
+                "other_ref1": null,
+                "other_ref2": null,
+                "other_ref3": null,
+                "other_ref4": null,
+                "other_ref5": null,
+                "other_ref6": null,
+                "other_ref7": null,
+                "other_ref8": null,
+                "other_ref9": null,
+                "other_ref10": null,
+                "other_ref11": null,
+                "other_ref12": null,
+                "other_ref13": null,
+                "other_ref14": null,
+                "other_ref15": null,
+                "additional_references": [],
+                "total_physical_stock": 0,
+                "supplier_product_ids": [],
+                "pack_components": []
+              }
+            },
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "id": 172369838,
+                  "created_at": "2020-06-26T12:16:37+00:00",
+                  "updated_at": "2021-11-29T15:40:12+00:00",
+                  "source": "Goldenfeather",
+                  "source_ref": "22",
+                  "user_ref": "sku-golden-feather-22",
+                  "stock": 10,
+                  "ean13": null,
+                  "title": null,
+                  "location": "",
+                  "picture_url": null,
+                  "weight": 5,
+                  "height": null,
+                  "length": null,
+                  "width": null,
+                  "hs_code": "312645",
+                  "supplier": null,
+                  "other_ref1": null,
+                  "other_ref2": null,
+                  "other_ref3": null,
+                  "other_ref4": null,
+                  "other_ref5": null,
+                  "other_ref6": null,
+                  "other_ref7": null,
+                  "other_ref8": null,
+                  "other_ref9": null,
+                  "other_ref10": null,
+                  "other_ref11": null,
+                  "other_ref12": null,
+                  "other_ref13": null,
+                  "other_ref14": null,
+                  "other_ref15": null,
+                  "additional_references": [],
+                  "total_physical_stock": 0,
+                  "supplier_product_ids": [],
+                  "pack_components": []
+                }
+              },
+              "properties": {
+                "id": {
+                  "type": "integer"
+                },
+                "created_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "updated_at": {
+                  "type": "string",
+                  "format": "date-time"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "source_ref": {
+                  "type": "string"
+                },
+                "user_ref": {
+                  "type": "string"
+                },
+                "stock": {
+                  "type": "integer"
+                },
+                "ean13": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "picture_url": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "length": {
+                  "type": "integer"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "hs_code": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "supplier": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref1": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref2": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref3": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref4": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref5": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref6": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref7": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref8": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref9": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref10": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref11": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref12": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref13": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref14": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "other_ref15": {
+                  "type": "string",
+                  "x-deprecated": true
+                },
+                "total_physical_stock": {
+                  "type": "integer"
+                },
+                "additional_references": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/definitions/AdditionalReference"
+                  }
+                },
+                "supplier_product_ids": {
+                  "type": "array",
+                  "items": {
+                    "type": "integer"
+                  }
+                },
+                "pack_components": {
+                  "type": "array",
+                  "items": {
+                    "type": "object"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "id": 172369838,
+                  "created_at": "2020-06-26T12:16:37+00:00",
+                  "updated_at": "2021-11-29T15:40:12+00:00",
+                  "source": "Goldenfeather",
+                  "source_ref": "22",
+                  "user_ref": "sku-golden-feather-22",
+                  "stock": 10,
+                  "ean13": null,
+                  "title": null,
+                  "location": "",
+                  "picture_url": null,
+                  "weight": 5,
+                  "height": null,
+                  "length": null,
+                  "width": null,
+                  "hs_code": "312645",
+                  "supplier": null,
+                  "other_ref1": null,
+                  "other_ref2": null,
+                  "other_ref3": null,
+                  "other_ref4": null,
+                  "other_ref5": null,
+                  "other_ref6": null,
+                  "other_ref7": null,
+                  "other_ref8": null,
+                  "other_ref9": null,
+                  "other_ref10": null,
+                  "other_ref11": null,
+                  "other_ref12": null,
+                  "other_ref13": null,
+                  "other_ref14": null,
+                  "other_ref15": null,
+                  "additional_references": [],
+                  "total_physical_stock": 0,
+                  "supplier_product_ids": [],
+                  "pack_components": []
+                }
+              },
+              "properties": {
+                "user_ref": {
+                  "type": "string"
+                },
+                "stock": {
+                  "type": "integer"
+                },
+                "ean13": {
+                  "type": "string"
+                },
+                "title": {
+                  "type": "string"
+                },
+                "location": {
+                  "type": "string"
+                },
+                "picture_url": {
+                  "type": "string"
+                },
+                "weight": {
+                  "type": "integer"
+                },
+                "height": {
+                  "type": "integer"
+                },
+                "length": {
+                  "type": "integer"
+                },
+                "width": {
+                  "type": "integer"
+                },
+                "hs_code": {
+                  "type": "string"
+                },
+                "supplier": {
+                  "type": "string",
+                  "x-nullable": true
+                },
+                "total_physical_stock": {
+                  "type": "integer"
+                }
+              },
+              "required": [
+                "user_ref"
+              ]
+            },
+            "x-examples": {
+              "Creation example": {
+                "user_ref": "my-user-ref",
+                "stock": 0,
+                "ean13": "1234567891234",
+                "title": "My super product",
+                "location": "A1",
+                "picture_url": "https://picture.exemple.com/pic.png",
+                "weight": 200,
+                "height": 150,
+                "length": 150,
+                "width": 150,
+                "hs_code": "32165478",
+                "supplier": null
+              }
+            }
+          }
+        ],
+        "description": "Create a product"
+      }
+    },
+    "/products/{productId}": {
+      "parameters": [
+        {
+          "type": "integer",
+          "name": "productId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "get": {
+        "summary": "Get a Product",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            },
+            "examples": {
+              "Example": {
+                "id": 0,
+                "source": "string",
+                "source_ref": "string",
+                "user_ref": "string",
+                "stock": 0,
+                "ean13": "string",
+                "title": "string",
+                "location": "string",
+                "picture_rul": "string",
+                "weight": 0,
+                "height": 0,
+                "length": 0,
+                "width": 0,
+                "hs_code": "string",
+                "supplier": "string",
+                "total_physical_stock": 0,
+                "additonal_references": [
+                  {
+                    "id": "string",
+                    "order_item_field": "string",
+                    "product_field": "string",
+                    "order_item_value": "string",
+                    "product_value": "string",
+                    "matched_quantity": "string"
+                  }
+                ],
+                "supplier_product_ids": [
+                  0
+                ],
+                "pack_components": [
+                  {
+                    "id": 0,
+                    "quantity": 0,
+                    "pack_product_id": 0,
+                    "component_product_id": 0
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "operationId": "products",
+        "description": "Returns main information of a Product"
+      },
+      "patch": {
+        "summary": "Update a Product",
+        "operationId": "put-products",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Product"
+            },
+            "examples": {
+              "Example": {
+                "id": 0,
+                "source": "string",
+                "source_ref": "string",
+                "user_ref": "string",
+                "stock": 0,
+                "ean13": "string",
+                "title": "string",
+                "location": "string",
+                "picture_rul": "string",
+                "weight": 0,
+                "height": 0,
+                "length": 0,
+                "width": 0,
+                "hs_code": "string",
+                "supplier": "string",
+                "total_physical_stock": 0,
+                "additonal_references": [
+                  {
+                    "id": "string",
+                    "order_item_field": "string",
+                    "product_field": "string",
+                    "order_item_value": "string",
+                    "product_value": "string",
+                    "matched_quantity": "string"
+                  }
+                ],
+                "supplier_product_ids": [
+                  0
+                ],
+                "pack_components": [
+                  {
+                    "id": 0,
+                    "quantity": 0,
+                    "pack_product_id": 0,
+                    "component_product_id": 0
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {}
+            }
+          }
+        ]
+      }
+    },
+    "/supply_capsules": {
+      "post": {
+        "summary": "Create a SupplyCapsule",
+        "operationId": "post-supply_capsules",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SupplyCapsule"
+            }
+          }
+        },
+        "description": "Create a SupplyCapsule",
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "source_ref": {
+                  "type": "string"
+                },
+                "expected_delivery_date": {
+                  "type": "string"
+                },
+                "supplier_name": {
+                  "type": "string"
+                },
+                "supplier_code": {
+                  "type": "string"
+                },
+                "supplier_id": {
+                  "type": "integer"
+                },
+                "supply_capsule_items_attributes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "source_ref": {
+                        "type": "string"
+                      },
+                      "product_ref": {
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "type": "integer"
+                      }
+                    }
+                  }
+                }
+              },
+              "x-examples": {
+                "example-1": {
+                  "source_ref": "my_source_ref",
+                  "expected_delivery_date": "",
+                  "supplier_name": "My Supplier",
+                  "supplier_code": "MY_SUPPLIER_001",
+                  "supplier_id": 1,
+                  "supply_capsule_items_attributes": [
+                    {
+                      "source_ref": "MY_PRODUCT_SOURCE_REF",
+                      "product_ref": "MY_SKU",
+                      "quantity": 5
+                    }
+                  ]
+                }
+              }
+            },
+            "x-examples": {
+              "Basic": {
+                "source_ref": "my_source_ref",
+                "expected_delivery_date": "",
+                "supplier_name": "My Supplier",
+                "supplier_code": "MY_SUPPLIER_001",
+                "supply_capsule_items_attributes": [
+                  {
+                    "source_ref": "MY_PRODUCT_SOURCE_REF",
+                    "product_ref": "MY_SKU",
+                    "quantity": 5
+                  }
+                ]
+              },
+              "Multi SBO": {
+                "source_ref": "my_source_ref",
+                "expected_delivery_date": "",
+                "supplier_name": "My Supplier",
+                "supplier_code": "MY_SUPPLIER_001",
+                "supplier_id": 1,
+                "supply_capsule_items_attributes": [
+                  {
+                    "source_ref": "MY_PRODUCT_SOURCE_REF",
+                    "product_ref": "MY_SKU",
+                    "quantity": 5
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/supply_capsules/{supply_capsule_id}": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "supply_capsule_id",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "put": {
+        "summary": "Update a SupplyCapsule",
+        "operationId": "put-supply_capsules-supply_capsule_id",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/SupplyCapsule"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "state": "canceled"
+                }
+              },
+              "properties": {
+                "state": {
+                  "type": "string"
+                },
+                "supplier_id": {
+                  "type": "integer"
+                }
+              }
+            }
+          }
+        ],
+        "description": "Update "
+      }
+    },
+    "/returns_orders": {
+      "post": {
+        "summary": "Create a ReturnOrder",
+        "operationId": "post-returns_orders",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/ReturnOrder"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "order_id": 132,
+                  "reason": "Your own reason",
+                  "reason_ref": "Your own reference",
+                  "return_order_type": "return_order_label",
+                  "return_order_expected_items_attributes": [
+                    {
+                      "quantity": 4,
+                      "user_ref": "your_sku"
+                    }
+                  ]
+                }
+              },
+              "properties": {
+                "order_id": {
+                  "type": "integer"
+                },
+                "reason": {
+                  "type": "string"
+                },
+                "reason_ref": {
+                  "type": "string"
+                },
+                "return_order_type": {
+                  "type": "string"
+                },
+                "source": {
+                  "type": "string"
+                },
+                "source_ref": {
+                  "type": "string"
+                },
+                "return_order_expected_items_attributes": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "quantity": {
+                        "type": "integer"
+                      },
+                      "user_ref": {
+                        "type": "string"
+                      }
+                    }
+                  }
+                }
+              }
+            },
+            "x-examples": {
+              "With order_id": {
+                "order_id": 123,
+                "reason": "broken product",
+                "reason_ref": "REPAiR",
+                "return_order_type": "return_order_customer",
+                "return_order_expected_items_attributes": [
+                  {
+                    "quantity": 2,
+                    "user_ref": "my_sku"
+                  }
+                ]
+              },
+              "With source and source_ref": {
+                "source": "Amazon",
+                "source_ref": "amazon_order_id",
+                "reason": "broken product",
+                "reason_ref": "REPAiR",
+                "return_order_type": "return_order_customer",
+                "return_order_expected_items_attributes": [
+                  {
+                    "quantity": 2,
+                    "user_ref": "my_sku"
+                  }
+                ]
+              }
+            },
+            "description": ""
+          }
+        ]
+      }
+    },
+    "/suppliers/available_for_return_order": {
+      "get": {
+        "summary": "Get suppliers available for returns",
+        "tags": [],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "array",
+              "items": {
+                "$ref": "#/definitions/Supplier"
+              }
+            }
+          }
+        },
+        "operationId": "get-suppliers-available_for_return_order"
+      },
+      "parameters": []
+    },
+    "/orders/{orderId}/update_order_items": {
+      "parameters": [
+        {
+          "type": "string",
+          "name": "orderId",
+          "in": "path",
+          "required": true
+        }
+      ],
+      "post": {
+        "summary": "",
+        "operationId": "post-orders-orderId-update_order_items",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Order"
+            }
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "x-examples": {
+                "example-1": {
+                  "order_items": [
+                    {
+                      "id": 1,
+                      "product_ref": "my_sku",
+                      "title": "My Product",
+                      "quantity": 3,
+                      "product_source": "my source",
+                      "product_source_ref": "my product source ref",
+                      "product_ean": "my product ean13"
+                    }
+                  ]
+                }
+              },
+              "properties": {
+                "order_items": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "properties": {
+                      "id": {
+                        "type": "integer"
+                      },
+                      "product_ref": {
+                        "type": "string"
+                      },
+                      "title": {
+                        "type": "string"
+                      },
+                      "quantity": {
+                        "type": "integer"
+                      },
+                      "product_source": {
+                        "type": "string"
+                      },
+                      "product_source_ref": {
+                        "type": "string"
+                      },
+                      "product_ean": {
+                        "type": "string"
+                      }
+                    },
+                    "required": [
+                      "id"
+                    ]
+                  }
+                }
+              }
+            },
+            "x-examples": {
+              "Update an OrderItem": {
+                "order_items": [
+                  {
+                    "id": 0,
+                    "product_ref": "string",
+                    "title": "string",
+                    "quantity": 0,
+                    "product_source": "string",
+                    "product_source_ref": "string",
+                    "product_ean": "string"
+                  }
+                ]
+              },
+              "Create an OrderItem": {
+                "order_items": [
+                  {
+                    "product_ref": "string",
+                    "title": "string",
+                    "quantity": 0,
+                    "product_source": "string",
+                    "product_source_ref": "string",
+                    "product_ean": "string"
+                  }
+                ]
+              }
+            }
+          }
+        ]
+      }
+    },
+    "/product_barcodes": {
+      "post": {
+        "summary": "",
+        "operationId": "post-product_barcodes",
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "parameters": [
+          {
+            "in": "body",
+            "name": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "product_id": {
+                  "type": "integer"
+                },
+                "key": {
+                  "type": "string"
+                },
+                "value": {
+                  "type": "string"
+                }
+              },
+              "x-examples": {
+                "example-1": {
+                  "product_id": 0,
+                  "key": "ean",
+                  "value": "1236547893214"
+                }
+              }
+            }
+          }
         ]
       }
     }
@@ -361,7 +1636,7 @@
           "": "string"
         }
       },
-      "x-internal": true,
+      "x-internal": false,
       "properties": {
         "id": {
           "type": "integer",
@@ -395,13 +1670,16 @@
           "type": "string"
         },
         "street2": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "street3": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "state": {
-          "type": "string"
+          "type": "string",
+          "x-nullable": true
         },
         "country": {
           "type": "string"
@@ -423,6 +1701,8 @@
     "Order": {
       "title": "Order",
       "type": "object",
+      "description": "The Order model",
+      "x-internal": false,
       "properties": {
         "id": {
           "type": "integer"
@@ -480,6 +1760,30 @@
           "type": "string",
           "format": "date-time"
         },
+        "total_price_cents": {
+          "type": "integer"
+        },
+        "total_price_currency": {
+          "type": "string"
+        },
+        "total_tax_cents": {
+          "type": "integer"
+        },
+        "total_tax_currency": {
+          "type": "string"
+        },
+        "total_shipping_tax_included_cents": {
+          "type": "integer"
+        },
+        "total_shipping_tax_included_currency": {
+          "type": "string"
+        },
+        "total_shipping_tax_cents": {
+          "type": "integer"
+        },
+        "total_shipping_tax_currency": {
+          "type": "string"
+        },
         "order_item_attributes": {
           "type": "array",
           "description": "When you create an OrderItem you have to remove the id from the object. The id will be returned by the API",
@@ -496,13 +1800,12 @@
         "origin_ref",
         "origin_created_at",
         "order_item_attributes"
-      ],
-      "description": "The Order model",
-      "x-internal": true
+      ]
     },
     "OrderItem": {
       "title": "OrderItem",
       "type": "object",
+      "x-internal": false,
       "properties": {
         "id": {
           "type": "number"
@@ -514,7 +1817,7 @@
           "type": "string"
         },
         "quantity": {
-          "type": "string"
+          "type": "integer"
         },
         "product_ean": {
           "type": "string"
@@ -530,9 +1833,20 @@
         },
         "source_ref": {
           "type": "string"
+        },
+        "price_tax_included_cents": {
+          "type": "integer"
+        },
+        "price_tax_included_currency": {
+          "type": "string"
+        },
+        "tax_cents": {
+          "type": "integer"
+        },
+        "tax_currency": {
+          "type": "string"
         }
-      },
-      "x-internal": true
+      }
     },
     "UploadedFile": {
       "title": "UploadedFile",
@@ -581,17 +1895,591 @@
           "type": "string"
         }
       }
+    },
+    "Product": {
+      "title": "Product",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "source": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "user_ref": {
+          "type": "string"
+        },
+        "stock": {
+          "type": "integer"
+        },
+        "ean13": {
+          "type": "string"
+        },
+        "title": {
+          "type": "string"
+        },
+        "location": {
+          "type": "string"
+        },
+        "picture_rul": {
+          "type": "string"
+        },
+        "weight": {
+          "type": "integer"
+        },
+        "height": {
+          "type": "integer"
+        },
+        "length": {
+          "type": "integer"
+        },
+        "width": {
+          "type": "integer"
+        },
+        "hs_code": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "supplier": {
+          "type": "string",
+          "x-nullable": true
+        },
+        "total_physical_stock": {
+          "type": "integer"
+        },
+        "additonal_references": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderItemProductMapping"
+          }
+        },
+        "supplier_product_ids": {
+          "type": "array",
+          "items": {
+            "type": "integer"
+          }
+        },
+        "pack_components": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/PackComponent"
+          }
+        }
+      },
+      "required": [
+        "user_ref"
+      ]
+    },
+    "OrderItemProductMapping": {
+      "title": "OrderItemProductMapping",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "order_item_field": {
+          "type": "string"
+        },
+        "product_field": {
+          "type": "string"
+        },
+        "order_item_value": {
+          "type": "string"
+        },
+        "product_value": {
+          "type": "string"
+        },
+        "matched_quantity": {
+          "type": "string"
+        }
+      }
+    },
+    "PackComponent": {
+      "title": "PackComponent",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "pack_product_id": {
+          "type": "integer"
+        },
+        "component_product_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "Shipment": {
+      "description": "",
+      "type": "object",
+      "x-examples": {
+        "example-1": {
+          "id": 900886325,
+          "created_at": "2022-03-30T13:22:52+00:00",
+          "updated_at": "2022-03-30T13:22:52+00:00",
+          "order_id": 980191358,
+          "carrier_name": "SboLabelByApi",
+          "shipping_method_name": "Classic API",
+          "carrier_id": 1060660107,
+          "shipping_method_id": 1060660120,
+          "shipping_ref": "12346",
+          "tracking_url": "http://tracking.fake/123456",
+          "package_id": 3425,
+          "label_price_cents": null,
+          "label_price_currency": null,
+          "items_shipment_serial_numbers": [],
+          "carrier_barcode": null,
+          "order_items_shipments": [
+            {
+              "order_item_id": 1004159358,
+              "quantity": 1,
+              "order_item_shipment_picking_histories": []
+            },
+            {
+              "order_item_id": 1004159359,
+              "quantity": 2,
+              "order_item_shipment_picking_histories": []
+            }
+          ],
+          "delivery_at": null
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "number"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "order_id": {
+          "type": "integer"
+        },
+        "carrier_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "shipping_method_name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "carrier_id": {
+          "type": "integer"
+        },
+        "shipping_method_id": {
+          "type": "integer"
+        },
+        "shipping_ref": {
+          "type": "string",
+          "minLength": 1
+        },
+        "tracking_url": {
+          "type": "string",
+          "minLength": 1
+        },
+        "package_id": {
+          "type": "integer"
+        },
+        "label_price_cents": {},
+        "label_price_currency": {},
+        "items_shipment_serial_numbers": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ItemsShipmentSerialNumber"
+          }
+        },
+        "carrier_barcode": {
+          "type": "string"
+        },
+        "order_items_shipments": {
+          "type": "array",
+          "uniqueItems": false,
+          "items": {
+            "$ref": "#/definitions/OrderItemsShipment"
+          }
+        },
+        "delivery_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "x-internal": false
+    },
+    "ItemsShipmentSerialNumber": {
+      "title": "ItemsShipmentSerialNumber",
+      "type": "object",
+      "properties": {
+        "order_item_id": {
+          "type": "integer"
+        },
+        "serial_number": {
+          "type": "string"
+        }
+      }
+    },
+    "OrderItemsShipment": {
+      "title": "OrderItemsShipment",
+      "type": "object",
+      "properties": {
+        "order_item_id": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        },
+        "order_item_shipment_picking_histories": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/OrderItemShipmentPickingHistory"
+          }
+        }
+      }
+    },
+    "OrderItemShipmentPickingHistory": {
+      "title": "OrderItemShipmentPickingHistory",
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "batch_number": {
+          "type": "string"
+        },
+        "last_preparation_day": {
+          "type": "string"
+        }
+      },
+      "description": ""
+    },
+    "AdditionalReference": {
+      "type": "object",
+      "x-examples": {
+        "example-1": {
+          "id": 3,
+          "created_at": "2022-05-12T14:12:58+00:00",
+          "updated_at": "2022-05-12T14:12:58+00:00",
+          "order_item_field": "product_ref",
+          "product_field": "id",
+          "order_item_value": "azeazerazeazer",
+          "product_value": "172369838",
+          "matched_quantity": 1
+        }
+      },
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "order_item_field": {
+          "type": "string"
+        },
+        "product_field": {
+          "type": "string"
+        },
+        "order_item_value": {
+          "type": "string"
+        },
+        "product_value": {
+          "type": "string"
+        },
+        "matched_quantity": {
+          "type": "integer"
+        }
+      }
+    },
+    "SupplyCapsule": {
+      "title": "SupplyCapsule",
+      "x-stoplight": {
+        "id": "rydjpwbyvxbz3"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "expected_delivery_date": {
+          "type": "string"
+        },
+        "supplier_name": {
+          "type": "string"
+        },
+        "supplier_code": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "uploading",
+            "draft",
+            "waiting",
+            "canceled",
+            "received",
+            "dispatched",
+            "in_trouble",
+            "processing"
+          ],
+          "default": "waiting"
+        },
+        "supplier_id": {
+          "type": "integer"
+        },
+        "supply_capsule_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/SupplyCapsuleItem"
+          }
+        }
+      }
+    },
+    "SupplyCapsuleItem": {
+      "title": "SupplyCapsuleItem",
+      "x-stoplight": {
+        "id": "g2qlnyc3kas4s"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "source_ref": {
+          "type": "string"
+        },
+        "product_ref": {
+          "type": "string"
+        },
+        "quantity": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "received_quantity": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "product_id": {
+          "type": "integer"
+        }
+      }
+    },
+    "ReturnOrder": {
+      "title": "ReturnOrder",
+      "x-stoplight": {
+        "id": "b56rtam9u3bnw"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "string"
+        },
+        "user_email": {
+          "type": "string"
+        },
+        "state": {
+          "type": "string",
+          "enum": [
+            "new",
+            "canceled",
+            "returned",
+            "closed",
+            "dispatched",
+            "in_trouble"
+          ],
+          "default": "new"
+        },
+        "returned_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "order_id": {
+          "type": "integer"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "reason_ref": {
+          "type": "string"
+        },
+        "return_order_type": {
+          "type": "string",
+          "enum": [
+            "return_order_label",
+            "return_order_carrier",
+            "return_order_customer"
+          ]
+        },
+        "return_order_expected_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReturnOrderExpectedItem"
+          }
+        },
+        "return_order_items": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReturnOrderItem"
+          }
+        },
+        "returned_product_not_restockables": {
+          "type": "array",
+          "items": {
+            "$ref": "#/definitions/ReturnedProductNotRestockable"
+          }
+        }
+      }
+    },
+    "ReturnOrderExpectedItem": {
+      "title": "ReturnOrderExpectedItem",
+      "x-stoplight": {
+        "id": "psb9lyy1r9odf"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "return_order_id": {
+          "type": "integer"
+        },
+        "product_id": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      }
+    },
+    "ReturnedProductNotRestockable": {
+      "title": "ReturnedProductNotRestockable",
+      "x-stoplight": {
+        "id": "o4b58c4mqtgtj"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "return_order_expected_item_id": {
+          "type": "integer"
+        },
+        "product_id": {
+          "type": "integer"
+        },
+        "reason": {
+          "type": "string"
+        },
+        "reason_ref": {
+          "type": "string"
+        },
+        "serial_number": {
+          "type": "string"
+        }
+      }
+    },
+    "ReturnOrderItem": {
+      "title": "ReturnOrderItem",
+      "x-stoplight": {
+        "id": "x519t4wplauqi"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "return_order_id": {
+          "type": "integer"
+        },
+        "product_id": {
+          "type": "integer"
+        },
+        "quantity": {
+          "type": "integer"
+        }
+      }
+    },
+    "Supplier": {
+      "title": "Supplier",
+      "x-stoplight": {
+        "id": "m5ipplq7livg7"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "name": {
+          "type": "string"
+        }
+      }
+    },
+    "ProductBarcode": {
+      "title": "ProductBarcode",
+      "x-stoplight": {
+        "id": "a4j1frfe710u8"
+      },
+      "type": "object",
+      "properties": {
+        "id": {
+          "type": "integer"
+        },
+        "product_id": {
+          "type": "integer"
+        },
+        "key": {
+          "type": "string",
+          "enum": [
+            "ean"
+          ]
+        },
+        "value": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "product_id",
+        "key",
+        "value"
+      ]
     }
   },
   "securityDefinitions": {
     "Api Token": {
       "name": "X-API-TOKEN",
       "type": "apiKey",
-      "in": "header",
-      "description": ""
+      "in": "header"
     },
     "API login": {
       "name": "X-API-USER",
+      "type": "apiKey",
+      "in": "header",
+      "description": ""
+    },
+    "Api version": {
+      "name": "X-API-VERSION",
+      "type": "apiKey",
+      "in": "header",
+      "description": ""
+    },
+    "Api user id": {
+      "name": "X-API-USER-ID",
       "type": "apiKey",
       "in": "header",
       "description": ""
@@ -599,5 +2487,7 @@
   },
   "host": "app.shippingbo.com",
   "responses": {},
-  "parameters": {}
+  "parameters": {},
+  "x-api-user-id": "MY_TOKEN",
+  "x-extension-2": 6845
 }

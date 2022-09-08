@@ -6,6 +6,11 @@
     },
     {
       "type": "item",
+      "title": "Introduction",
+      "uri": "/docs/Good Practices/Introduction.md"
+    },
+    {
+      "type": "item",
       "title": "Authentication",
       "uri": "/docs/Good Practices/authentication.md"
     },
@@ -15,25 +20,66 @@
       "items": [
         {
           "type": "item",
-          "title": "How to connect an order source ?",
-          "uri": "/docs/Good Practices/Order source/Connect-order-source.md"
+          "title": "Connect an order source",
+          "uri": "/docs/Good Practices/Order source/Order Management/connect-order-source.md"
         },
         {
           "type": "item",
-          "title": "Join an invoice to an Order",
-          "uri": "/docs/Good Practices/Order source/join-invoice.md"
+          "title": "Create your first order",
+          "uri": "/docs/Good Practices/Order source/Order Management/Connect-order-source.md"
+        },
+        {
+          "type": "item",
+          "title": "Join an invoice to an order",
+          "uri": "/docs/Good Practices/Order source/Order Management/join-invoice.md"
         },
         {
           "type": "item",
           "title": "Product synchronisation",
-          "uri": "/docs/Good Practices/Order source/product-sync.md"
+          "uri": "/docs/Good Practices/Order source/Product Management/product-sync.md"
         },
         {
           "type": "item",
           "title": "Stock synchronisation",
-          "uri": "/docs/Good Practices/Order source/stock-sync.md"
+          "uri": "/docs/Good Practices/Order source/Stock Management/stock-sync.md"
         }
       ]
+    },
+    {
+      "type": "group",
+      "title": "Restock management",
+      "items": [
+        {
+          "type": "item",
+          "title": "Work with supply capsule",
+          "uri": "/docs/Good Practices/ERP/Supply-capsule.md"
+        }
+      ]
+    },
+    {
+      "type": "group",
+      "title": "Return orders management",
+      "items": [
+        {
+          "type": "item",
+          "title": "Create return order in Shippingbo",
+          "uri": "/docs/Good Practices/Return order/create-return-order.md"
+        },
+        {
+          "type": "item",
+          "title": "Verify products control and restocking",
+          "uri": "/docs/Good Practices/Return order/verify-return-order.md"
+        }
+      ]
+    },
+    {
+      "type": "divider",
+      "title": "Old documentation"
+    },
+    {
+      "type": "item",
+      "title": "Documentation",
+      "uri": "/docs/old-documentation.md"
     },
     {
       "type": "divider",
@@ -41,8 +87,13 @@
     },
     {
       "type": "item",
-      "title": "Order webhook",
+      "title": "Webhook",
       "uri": "/docs/Webhooks/Webhooks.md"
+    },
+    {
+      "type": "item",
+      "title": "Webhooks configuration",
+      "uri": "https://app.shippingbo.com/#/updateHooks"
     },
     {
       "type": "divider",
