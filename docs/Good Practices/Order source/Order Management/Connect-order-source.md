@@ -3,11 +3,11 @@ tags: [order, source, api]
 stoplight-id: c3fa417ce0854
 ---
 
-# Create your first order
+# Manage orders
 
 ## Introduction
 
-In this article we will see how to connect an order source, this integration can be usefull when the source is not natively connected to Shippingbo ([see availables sources](https://www.shippingbo.com/integrations/)) or if you need a special integration or specific behaviour
+In this article we will see how to connect an order source. This integration can be useful when the source is not natively connected to Shippingbo ([see availables sources](https://www.shippingbo.com/integrations/)) or if you need a special integration or specific behaviour
 
 
 ## Create orders on Shippingbo
@@ -20,15 +20,16 @@ title: API
 ### Create shipping and billing Address
 
 
-You must create shipping and billing address before you create an Order, you should keep returned IDs to inject them into the order payload
+You must create the shipping and billing address before you create an Order, you should keep any of the returned IDs to inject them into the order payload
 
 
 ```curl
 curl --request POST \
   --url https://app.shippingbo.com/addresses \
   --header 'Content-Type: application/json' \
-  --header 'X-API-TOKEN: ' \
-  --header 'X-API-USER: ' \
+  --header 'X-API-VERSION: 1' \
+  --header 'Authorization: Bearer WpS-eTz0ZQMq_91O-vH4Q_FobPrXfk8a4jtLwVt6-gw' \
+  --header 'X-API-APP-ID: 2'
   --data '{
   "city": "Toulouse",
   "zip": "31400",
@@ -55,8 +56,9 @@ $request->setMethod(HTTP_METH_POST);
 
 $request->setHeaders([
   'Content-Type' => 'application/json',
-  'X-API-TOKEN' => '',
-  'X-API-USER' => ''
+  'X-API-VERSION' => '1',
+  'X-API-APP-ID' => '',
+  'Authorization' => 'Bearer token'
 ]);
 
 $request->setBody('{
@@ -97,8 +99,9 @@ http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request["X-API-TOKEN"] = ''
-request["X-API-USER"] = ''
+request["X-API-VERSION"] = '1'
+request["Authorization"] = 'Bearer token'
+request["X-API-APP-ID"] = ''
 request.body = "{\n  \"city\": \"Toulouse\",\n  \"zip\": \"31400\",\n  \"firstname\": \"John\",\n  \"lastname\": \"Doe\",\n  \"instructions\": null,\n  \"phone1\": \"0102030405\",\n  \"phone2\": \"0501020304\",\n  \"email\": \"john.doe@exemple.com\",\n  \"street1\": \"3 avenue de l'europe\",\n  \"street2\": null,\n  \"street3\": null,\n  \"country\": \"FR\",\n  \"company_name\": \"Shippingbo\"\n}"
 
 response = http.request(request)
@@ -111,14 +114,15 @@ You can reproduce the same request to create the billing address with billing in
 
 #### Basic creation
 
-> Each you create an order, keep in mind that **source** and **source_ref** has a unicity constraint, they will identify the order on your website
+> Creating an order, keep in mind that **source** and **source_ref** has a unicity constraint, they will identify the order on your website
 
 ```curl
 curl --request POST \
   --url https://app.shippingbo.com/orders \
   --header 'Content-Type: application/json' \
-  --header 'X-API-TOKEN: ' \
-  --header 'X-API-USER: ' \
+  --header 'X-API-VERSION: 1' \
+  --header 'Authorization: Bearer WpS-eTz0ZQMq_91O-vH4Q_FobPrXfk8a4jtLwVt6-gw' \
+  --header 'X-API-APP-ID: 2'
   --data '{
   "source": "My Website",
   "source_ref": "123",
@@ -134,7 +138,7 @@ curl --request POST \
   "latest_shipped_at": "2019-08-24T14:15:22Z",
   "earliest_chosen_delivery_at": "2019-08-24T14:15:22Z",
   "latest_chosen_delivery_at": "2019-08-24T14:15:22Z",
-  "order_item_attributes": [
+  "order_items_attributes": [
     {
       "product_ref": "my-product-sku-001",
       "title": "My fabulous product",
@@ -155,8 +159,9 @@ $request->setMethod(HTTP_METH_POST);
 
 $request->setHeaders([
   'Content-Type' => 'application/json',
-  'X-API-TOKEN' => '',
-  'X-API-USER' => ''
+  'X-API-VERSION' => '1',
+  'X-API-APP-ID' => '',
+  'Authorization' => 'Bearer token'
 ]);
 
 $request->setBody('{
@@ -174,7 +179,7 @@ $request->setBody('{
   "latest_shipped_at": "2019-08-24T14:15:22Z",
   "earliest_chosen_delivery_at": "2019-08-24T14:15:22Z",
   "latest_chosen_delivery_at": "2019-08-24T14:15:22Z",
-  "order_item_attributes": [
+  "order_items_attributes": [
     {
       "product_ref": "my-product-sku-001",
       "title": "My fabulous product",
@@ -207,9 +212,10 @@ http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request["X-API-TOKEN"] = ''
-request["X-API-USER"] = ''
-request.body = "{\n  \"source\": \"My Website\",\n  \"source_ref\": \"123\",\n  \"shipping_address_id\": 1,\n  \"billing_address_id\": 2,\n  \"origin\": \"My Websit\",\n  \"origin_ref\": \"123\",\n  \"origin_created_at\": \"2019-08-24T14:15:22Z\",\n  \"chosen_delivery_service\": \"Fedex\",\n  \"earliest_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"earliest_shipped_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_shipped_at\": \"2019-08-24T14:15:22Z\",\n  \"earliest_chosen_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_chosen_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"order_item_attributes\": [\n    {\n      \"product_ref\": \"my-product-sku-001\",\n      \"title\": \"My fabulous product\",\n      \"quantity\": 1,\n      \"source\": \"My Website\",\n      \"source_ref\": \"123-1\"\n    }\n  ]\n}"
+request["X-API-VERSION"] = '1'
+request["Authorization"] = 'Bearer token'
+request["X-API-APP-ID"] = ''
+request.body = "{\n  \"source\": \"My Website\",\n  \"source_ref\": \"123\",\n  \"shipping_address_id\": 1,\n  \"billing_address_id\": 2,\n  \"origin\": \"My Websit\",\n  \"origin_ref\": \"123\",\n  \"origin_created_at\": \"2019-08-24T14:15:22Z\",\n  \"chosen_delivery_service\": \"Fedex\",\n  \"earliest_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"earliest_shipped_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_shipped_at\": \"2019-08-24T14:15:22Z\",\n  \"earliest_chosen_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_chosen_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"order_items_attributes\": [\n    {\n      \"product_ref\": \"my-product-sku-001\",\n      \"title\": \"My fabulous product\",\n      \"quantity\": 1,\n      \"source\": \"My Website\",\n      \"source_ref\": \"123-1\"\n    }\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -219,14 +225,15 @@ If the order must be delivered to relay point you sould add **relay_ref** field 
 
 #### Create with invoicing information
 
-> If you have the invoice option enabled on your account, you should pass some prices information in the body
+> If you have the invoice option enabled on your account, you should pass some pricing information in the body
 
 ```curl
 curl --request POST \
   --url https://app.shippingbo.com/orders \
   --header 'Content-Type: application/json' \
-  --header 'X-API-TOKEN: ' \
-  --header 'X-API-USER: ' \
+  --header 'X-API-VERSION: 1' \
+  --header 'Authorization: Bearer WpS-eTz0ZQMq_91O-vH4Q_FobPrXfk8a4jtLwVt6-gw' \
+  --header 'X-API-APP-ID: 2'
   --data '{
   "source": "My Website",
   "source_ref": "123",
@@ -247,7 +254,7 @@ curl --request POST \
   "total_tax_cents": 500,
   "total_shipping_tax_included_cents": 10,
   "total_shipping_tax_cents": 20,
-  "order_item_attributes": [
+  "order_items_attributes": [
     {
       "product_ref": "my-product-sku-001",
       "title": "My fabulous product",
@@ -272,8 +279,9 @@ $request->setMethod(HTTP_METH_POST);
 
 $request->setHeaders([
   'Content-Type' => 'application/json',
-  'X-API-TOKEN' => '',
-  'X-API-USER' => ''
+  'X-API-VERSION' => '1',
+  'X-API-APP-ID' => '',
+  'Authorization' => 'Bearer token'
 ]);
 
 $request->setBody('{
@@ -296,7 +304,7 @@ $request->setBody('{
   "total_tax_cents": 500,
   "total_shipping_tax_included_cents": 10,
   "total_shipping_tax_cents": 20,
-  "order_item_attributes": [
+  "order_items_attributes": [
     {
       "product_ref": "my-product-sku-001",
       "title": "My fabulous product",
@@ -333,9 +341,10 @@ http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
-request["X-API-TOKEN"] = ''
-request["X-API-USER"] = ''
-request.body = "{\n  \"source\": \"My Website\",\n  \"source_ref\": \"123\",\n  \"shipping_address_id\": 1,\n  \"billing_address_id\": 2,\n  \"origin\": \"My Websit\",\n  \"origin_ref\": \"123\",\n  \"origin_created_at\": \"2019-08-24T14:15:22Z\",\n  \"chosen_delivery_service\": \"Fedex\",\n  \"earliest_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"earliest_shipped_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_shipped_at\": \"2019-08-24T14:15:22Z\",\n  \"earliest_chosen_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_chosen_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"total_price_cents\": 1500,\n  \"total_price_currency\": \"EUR\",\n  \"total_tax_cents\": 500,\n  \"total_shipping_tax_included_cents\": 10,\n  \"total_shipping_tax_cents\": 20,\n  \"order_item_attributes\": [\n    {\n      \"product_ref\": \"my-product-sku-001\",\n      \"title\": \"My fabulous product\",\n      \"quantity\": 1,\n      \"source\": \"My Website\",\n      \"source_ref\": \"123-1\",\n      \"price_tax_included_cents\": 1490,\n      \"price_tax_included_currency\": \"EUR\",\n      \"tax_cents\": 480,\n      \"tax_currency\": \"EUR\"\n    }\n  ]\n}"
+request["X-API-VERSION"] = '1'
+request["Authorization"] = 'Bearer token'
+request["X-API-APP-ID"] = ''
+request.body = "{\n  \"source\": \"My Website\",\n  \"source_ref\": \"123\",\n  \"shipping_address_id\": 1,\n  \"billing_address_id\": 2,\n  \"origin\": \"My Websit\",\n  \"origin_ref\": \"123\",\n  \"origin_created_at\": \"2019-08-24T14:15:22Z\",\n  \"chosen_delivery_service\": \"Fedex\",\n  \"earliest_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"earliest_shipped_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_shipped_at\": \"2019-08-24T14:15:22Z\",\n  \"earliest_chosen_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"latest_chosen_delivery_at\": \"2019-08-24T14:15:22Z\",\n  \"total_price_cents\": 1500,\n  \"total_price_currency\": \"EUR\",\n  \"total_tax_cents\": 500,\n  \"total_shipping_tax_included_cents\": 10,\n  \"total_shipping_tax_cents\": 20,\n  \"order_items_attributes\": [\n    {\n      \"product_ref\": \"my-product-sku-001\",\n      \"title\": \"My fabulous product\",\n      \"quantity\": 1,\n      \"source\": \"My Website\",\n      \"source_ref\": \"123-1\",\n      \"price_tax_included_cents\": 1490,\n      \"price_tax_included_currency\": \"EUR\",\n      \"tax_cents\": 480,\n      \"tax_currency\": \"EUR\"\n    }\n  ]\n}"
 
 response = http.request(request)
 puts response.read_body
@@ -353,6 +362,9 @@ This endpoint will update your current OrderItems or if you ommit the `id` in th
 curl --request POST \
   --url https://app.shippingbo.com/orders/orderId/update_order_items \
   --header 'Content-Type: application/json' \
+  --header 'X-API-VERSION: 1' \
+  --header 'Authorization: Bearer WpS-eTz0ZQMq_91O-vH4Q_FobPrXfk8a4jtLwVt6-gw' \
+  --header 'X-API-APP-ID: 2'
   --data '{
   "order_items": [
     {
@@ -375,7 +387,10 @@ $request->setUrl('https://app.shippingbo.com/orders/orderId/update_order_items')
 $request->setMethod(HTTP_METH_POST);
 
 $request->setHeaders([
-  'Content-Type' => 'application/json'
+  'Content-Type' => 'application/json',
+  'X-API-VERSION' => '1',
+  'X-API-APP-ID' => '',
+  'Authorization' => 'Bearer token'
 ]);
 
 $request->setBody('{
@@ -413,6 +428,9 @@ http.verify_mode = OpenSSL::SSL::VERIFY_NONE
 
 request = Net::HTTP::Post.new(url)
 request["Content-Type"] = 'application/json'
+request["X-API-VERSION"] = '1'
+request["Authorization"] = 'Bearer token'
+request["X-API-APP-ID"] = ''
 request.body = "{\n  \"order_items\": [\n    {\n      \"id\": 1,\n      \"product_ref\": \"my_sku\",\n      \"title\": \"My Product\",\n      \"quantity\": 3,\n      \"product_source\": \"my source\",\n      \"product_source_ref\": \"my product source ref\",\n      \"product_ean\": \"my product ean13\"\n    }\n  ]\n}"
 
 response = http.request(request)
@@ -421,17 +439,17 @@ puts response.read_body
 
 ## Create a Webhook to synchronize the Order state
 
-Once the Order is created, you need to keep in touch your customer. We recommend to not interact directly with the ressource to avoid throttling with a GET request on order/{id} but we actively recommend to use Webhooks
+Once the Order is created, you need to keep in touch with your customer. We recommend not interacting directly with the resource to avoid throttling the  GET request on order/{id}. For this we actively recommend the use of Webhooks
 
 Go to the [Webhooks](https://app.shippingbo.com/#/updateHooks) configuation page
 
-Then click on **Add** button, select [**Order**](reference/Shipping-API-V1.json/definitions/Order) as object and select **state** in field
+Then click on the **Add** button, select [**Order**](reference/Shipping-API-V1.json/definitions/Order) as the object and select **state** in the field
 
 Fill in the endpoint with your API URL that should be called when the Order state is updated
 
-So now, every time an Order has its state updated your endpoint will be called
+So now, every time an Order state is updated your endpoint will be called
 
-See: [Webhooks Documentation](https://shippingbo.stoplight.io/docs/api-rest/branches/main/ZG9jOjg3MzY0MzM-order-webhook) for advanced usages
+See: [Webhooks Documentation](https://developer.shippingbo.com/docs/api/branches/main/6fkoxdhf5024p-how-to-configure) for advanced usages
 
 <!--
 type: tab
@@ -439,6 +457,8 @@ title: SFTP
 -->
 
 ## Basic fields
+
+> Each time you create an order, keep in mind that **orderId** identifies the order on your website
 
 | Header  |Description|Mandatory|
 |---|---|---|
@@ -449,6 +469,7 @@ title: SFTP
 |companyName|company name of the shipping address|No|
 |firstname|firstname|Yes|
 |lastname|lastname|Yes|
+|name|name|Yes if you don't use firstname and lastname. Do not use if you use firstname and lastname|
 |address1|address line 1|Yes|
 |address2|address line 2|No|
 |address3|address line 3|No|
@@ -521,7 +542,6 @@ date,orderId,lineId,origin,originRef,sku,ean,quantity,description,companyName,na
 2022-09-22 10:22,1234,1,Myorigin,Myorigin-132,sku-001,,1,product title,My Super Company,,John,Doe,Rue de la paix,,,31000,Toulouse,FR,0102030405,,test@shippingbo.com,leave it in the letter box,Home Delivery,1500,500,1500,1500,250,EUR
 2022-09-22 10:22,1234,2,Myorigin,Myorigin-132,sku-002,,1,product title 2,My Super Company,,John,Doe,Rue de la paix,,,31000,Toulouse,FR,0102030405,,test@shippingbo.com,leave it in the letter box,Home Delivery,3000,500,1500,1500,250,EUR
 ```
-
 
 <!-- type: tab-end -->
 

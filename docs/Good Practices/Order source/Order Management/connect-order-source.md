@@ -32,4 +32,6 @@ sequenceDiagram
       Shippingbo API->>Customer: Send email/SMS confirmation
       Shippingbo API->>Customer: Send order state notification
     end
+    Shippingbo API-->>Your server: The order is shipped
+    Note over Shippingbo API,Your server: Notification as a webhook
 ```

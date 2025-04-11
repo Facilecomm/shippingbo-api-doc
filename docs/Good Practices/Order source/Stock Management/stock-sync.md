@@ -3,17 +3,17 @@ tags: [api, stock, product]
 stoplight-id: d1cad0c28846a
 ---
 
-# Virtual stock synchronisation
+# Virtual stock synchronization
 
-We recommend to not interact directly with the ressource to avoid throttling with a GET request on **product/{id}** or **/products** but we actively recommend to use Webhooks
+We recommend to not interact directly with the resource to avoid throttling with a GET request on **product/{id}** or **/products** but we actively recommend the use of Webhooks
 
 ## Configure your webhook
 
-We recommend to follow this [article](https://developer.shippingbo.com/docs/webhook/)
+We recommend following this [article](https://developer.shippingbo.com/docs/webhook/)
 
 ## The notification
 
-Everytime a stock movement has been done on a product we will call your endpoint with the name of the ressource, a seriliazed **Product** and an object with reason of the call: **additional_data**
+Everytime a stock movement has been done on a product we will call your endpoint with the name of the resource, a seriliazed **Product** and an object with reason of the call: **additional_data**
 You will find the new value of the stock in the field `stock`
 
 ```json
@@ -72,8 +72,10 @@ Once the notification is received, you can update the stock on your website and 
 
 ## 🔥 Caution: can be spammy 🔥
 
-The number of call is equal to the number of stock movement on your Shippingbo account. Your server must be ready to receive calls as much as necessary
+The number of calls are equal to the number of stock movements on your Shippingbo account. Your server must be ready to receive calls as much as necessary
 
-If you server dot not respond Shippingbo can turn off the webhook to avoid spamming, protect your server and keep it safe
+If your server does not respond, Shippingbo can turn off the webhook to avoid spamming, protect your server and keep it safe
 
-We recommend to manage all requests asynchronously to avoid long response time and timeout
+We recommend to manage all requests asynchronously to avoid long response times and timeouts
+
+

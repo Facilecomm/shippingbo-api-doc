@@ -1,0 +1,188 @@
+openapi: 3.1.0
+x-stoplight:
+  id: x0dhn76sky84t
+info:
+  title: Authentication API
+  version: '1.0'
+  summary: This server must be used to obtain access tokens
+  description: Before requesting Shippingbo APIs make sure you have requested a valid access token
+servers:
+  - url: 'https://oauth.shippingbo.com'
+    description: Oauth Server
+paths:
+  /oauth/token:
+    post:
+      summary: Obtain an access token
+      operationId: post-oauth-token
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    access_token: WpS-eTz0ZQMq_91O-vH4Q_FobPrXfk8a4jtLwVt6-gw
+                    token_type: Bearer
+                    expires_in: 7200
+                    refresh_token: edxikEVl9oN4SBjLo8gga0B0IitHEQE44_8zL9ewvs0
+                    scope: order_source
+                    created_at: 1677505124
+                properties:
+                  access_token:
+                    type: string
+                  token_type:
+                    type: string
+                  expires_in:
+                    type: integer
+                  refresh_token:
+                    type: string
+                  scope:
+                    enum:
+                      - order
+                      - return
+                      - product
+                      - stock
+                      - supply_capsule
+                      - label_provider
+                  created_at:
+                    type: integer
+      x-stoplight:
+        id: mbg3mf1bbcl83
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                grant_type:
+                  x-stoplight:
+                    id: h25ljibfwi362
+                  enum:
+                    - authorization_code
+                    - refresh_token
+                client_id:
+                  type: string
+                  x-stoplight:
+                    id: gy0gnd8f6pelb
+                  description: Your client UID
+                client_secret:
+                  type: string
+                  x-stoplight:
+                    id: ax3eq0yt2kgk7
+                  description: Your client secret
+                code:
+                  type: string
+                  x-stoplight:
+                    id: 41gkdc0jscr2d
+                  description: |-
+                    The given code when the user has authorized the application.
+                    **Required** if the *grant_type* is *authorization_code*
+                redirect_uri:
+                  type: string
+                  x-stoplight:
+                    id: hzoa5phof7cc5
+                  description: Must the same as you provided in your application dashboard
+                resfresh_token:
+                  type: string
+                  x-stoplight:
+                    id: lu5xuz2mr6p5u
+                  description: |-
+                    This is the refresh_token you've obtain after an authorization or after the last refresh.
+                    **Required** if the *grant_type* is *refresh_token*
+              required:
+                - grant_type
+                - client_id
+                - client_secret
+                - redirect_uri
+            examples:
+              With authorization code:
+                value:
+                  grant_type: authorization_code
+                  client_id: jZgZZTwwdJXzBTN8btkssqO6UrbZriha5DX0rxdqj14
+                  client_secret: vqVUUuChI7UNZ-z0DKdYILr0XY0QbOslD1clDRlBmoA
+                  code: fd0847dbb559752d932dd3c1ac34ff98d27b11fe2fea5a864f44740cd7919ad0
+                  redirect_uri: 'https://oauth.yourapp.com/redirect'
+              With a refresh token:
+                value:
+                  grant_type: refresh_token
+                  client_id: jZgZZTwwdJXzBTN8btkssqO6UrbZriha5DX0rxdqj14
+                  client_secret: vqVUUuChI7UNZ-z0DKdYILr0XY0QbOslD1clDRlBmoA
+                  refresh_token: fd0847dbb559752d932dd3c1ac34ff98d27b11fe2fea5a864f44740cd7919ad0
+                  redirect_uri: 'https://oauth.yourapp.com/redirect'
+      description: ''
+  /oauth/token/info:
+    get:
+      summary: Access token information
+      tags: []
+      responses:
+        '200':
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                x-examples:
+                  Example 1:
+                    resource_owner_id: 1
+                    scopes: []
+                    expires_in_seconds: 7178
+                    application:
+                      uid: null
+                    created_at: 1440460991
+                properties:
+                  resource_owner_id:
+                    type: integer
+                    description: 'Identifier of the resource owner, i.e. the API Client or Label Provider who own the token'
+                  scopes:
+                    type: array
+                    description: The list of scopes for which this token can be used
+                    items:
+                      type: string
+                  expires_in_seconds:
+                    type: integer
+                    description: The token will expire this amount of seconds after the information request was made
+                  application:
+                    type: object
+                    properties:
+                      uid:
+                        type:
+                          - string
+                          - 'null'
+                        description: Identifier of the Shippingbo Developer Application for which this token was generated
+                  created_at:
+                    type: integer
+                    description: Creation date of the token
+                  resource_scope_id:
+                    type:
+                      - integer
+                      - 'null'
+                    x-stoplight:
+                      id: gqzt5ufk2bb0a
+                    description: |-
+                      If present, the ID of a Shippingbo entity for which the token can be used.
+
+                      In particular:
+                      - For the Label API scope, the ID of the Label Credential for which the token was generated.
+      operationId: get-oauth-token-info
+      x-stoplight:
+        id: fgsbltd0dhic5
+      description: Shows details about the token used for authentication
+      requestBody:
+        content: {}
+      security:
+        - Shippingbo Access Token: []
+    parameters: []
+components:
+  schemas: {}
+  securitySchemes:
+    Shippingbo Access Token:
+      type: oauth2
+      flows:
+        authorizationCode:
+          authorizationUrl: ''
+          tokenUrl: ''
+          refreshUrl: ''
+          scopes: {}
+x-internal: false

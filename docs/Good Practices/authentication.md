@@ -1,18 +1,20 @@
----
-internal: true
----
-
 # Authentication
+
+<!-- theme: warning -->
+
+> This article is deprecated ! Please migrate your system to the [Oauth authentication](https://developer.shippingbo.com/docs/api/eq2qnbmjnwg4y-authentication-with-oauth)
+
 
 <!--
 type: tab
 title: API
 -->
+
 The Shippingbo API has implemented four additonnals headers **X-API-TOKEN**, **X-API-USER**, **X-API-CLIENT-ID** and **X-API-VERSION** they will be communicated by the Shippingbo Team
 
 You should provide them in the header of each request
 
-For exemple if you create an [Address](https://developer.shippingbo.com/docs/api/5eb654bfa3b51-create-an-address):
+An example to create an [Address](https://developer.shippingbo.com/docs/api/5eb654bfa3b51-create-an-address):
 
 ```curl
 curl --request POST \
@@ -48,9 +50,9 @@ $request->setMethod(HTTP_METH_POST);
 
 $request->setHeaders([
   'Content-Type' => 'application/json',
-  'X-API-TOKEN' => '__YOUR_API_TOKEN__',
-  'X-API-USER' => '__YOUR_API_USER__',
-  'X-API-USER-ID' => '__YOUR_API_USER_ID__',
+  'X-API-TOKEN' => __YOUR_API_TOKEN__,
+  'X-API-USER'  => __YOUR_API_USER__,
+  'X-API-USER-ID' => __YOUR_API_USER_ID__,
   'X-API-VERSION' => '1'
 ]);
 
@@ -102,12 +104,30 @@ response = http.request(request)
 puts response.read_body
 ```
 
-If the API respond with a status code **200** your credentials and connection are operationals
+If the API responds with a status code **200** your credentials and connection are operational
 
-<!--
-type: tab
-title: FTP
--->
+## Headers description
 
+### X-API-VERSION
+
+The **X-API-VERSION** header must be the version number of the API you want to use
+
+Current version of the API => **1**
+
+### X-API-TOKEN
+
+The **X-API-TOKEN** header is the password received after your API account creation
+
+### X-API-USER
+
+The **X-API-USER** header is the email configured as an API user in the Shippingbo account
+
+Exemple: user.api@yourcompany.com
+
+### X-API-USER-ID (optionnal)
+
+The **X-API-USER-ID** is an optionnal header but recommend, you can find the user-id in the [Manage users page](https://app.shippingbo.com/#/users) of your Shippingbo account
+
+**Note**: an API user doesn't have access to the Shippingbo UI
 
 <!-- type: tab-end -->

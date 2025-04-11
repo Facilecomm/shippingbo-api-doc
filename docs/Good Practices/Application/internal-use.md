@@ -1,8 +1,8 @@
 ---
+stoplight-id: 7zyu5shp6qdwv
 internal: true
-tags: [product, api]
 ---
 
-# Product synchronisation
+# Application for a private usage
 
 The beginning of an awesome article...

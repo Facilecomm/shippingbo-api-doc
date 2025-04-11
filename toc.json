@@ -1,108 +1,223 @@
 {
-  "items": [
+  "collapseTableOfContents": true,
+  "items":[
     {
-      "type": "divider",
-      "title": "Good Practices"
+      "type":"item",
+      "title":"Introduction",
+      "uri":"/docs/Good Practices/Introduction.md"
     },
     {
-      "type": "item",
-      "title": "Introduction",
-      "uri": "/docs/Good Practices/Introduction.md"
+      "type":"item",
+      "title":"Limitation and throttling",
+      "uri":"/docs/Good Practices/throttling.md"
     },
     {
-      "type": "item",
-      "title": "Authentication",
-      "uri": "/docs/Good Practices/authentication.md"
+      "type":"item",
+      "title":"Old authentication (⚠️ deprecated)",
+      "uri":"/docs/Good Practices/authentication.md"
     },
     {
-      "type": "group",
-      "title": "Order source",
+      "type":"item",
+      "title":"Help",
+      "uri":"https://discord.gg/Ts3p7BT99a"
+    },
+    {
+      "type":"divider",
+      "title":"Shippingbo Apps"
+    },
+    {
+      "type":"item",
+      "title":"Create your app",
+      "uri":"/docs/Good Practices/Application/create-application.md"
+    },
+    {
+      "type":"item",
+      "title":"Authenticate with Oauth",
+      "uri":"/docs/Good Practices/Application/authentication-oauth.md"
+    },
+    {
+      "type":"item",
+      "title":"App validation process",
+      "uri":"/docs/Good Practices/Application/public-use.md"
+    },
+    {
+      "type":"divider",
+      "title":"Usecases"
+    },
+    {
+      "type":"group",
+      "title":"Order source",
       "items": [
         {
-          "type": "item",
-          "title": "Connect an order source",
-          "uri": "/docs/Good Practices/Order source/Order Management/connect-order-source.md"
+          "type":"item",
+          "title":"Connect an order source",
+          "uri":"/docs/Good Practices/Order source/Order Management/connect-order-source.md"
         },
         {
-          "type": "item",
-          "title": "Create your first order",
-          "uri": "/docs/Good Practices/Order source/Order Management/Connect-order-source.md"
+          "type":"item",
+          "title":"Manage orders",
+          "uri":"/docs/Good Practices/Order source/Order Management/Connect-order-source.md"
         },
         {
-          "type": "item",
-          "title": "Join an invoice to an order",
-          "uri": "/docs/Good Practices/Order source/Order Management/join-invoice.md"
+          "type":"item",
+          "title":"Join an invoice to an order",
+          "uri":"/docs/Good Practices/Order source/Order Management/join-invoice.md"
         },
         {
-          "type": "item",
-          "title": "Product synchronisation",
-          "uri": "/docs/Good Practices/Order source/Product Management/product-sync.md"
+          "type":"item",
+          "title":"Product synchronization",
+          "uri":"/docs/Good Practices/Order source/Product Management/product-sync.md"
         },
         {
-          "type": "item",
-          "title": "Stock synchronisation",
-          "uri": "/docs/Good Practices/Order source/Stock Management/stock-sync.md"
+          "type":"item",
+          "title":"Stock synchronization",
+          "uri":"/docs/Good Practices/Order source/Stock Management/stock-sync.md"
+        },
+        {
+          "type":"item",
+          "title":"Physical stock",
+          "uri":"/docs/Good Practices/Order source/Stock Management/physical-stock-sync.md"
+        },
+        {
+          "type":"item",
+          "title":"Manage shipments",
+          "uri":"/docs/Good Practices/Order source/Order Management/manage-shipment.md"
         }
       ]
     },
     {
-      "type": "group",
-      "title": "Restock management",
+      "type":"group",
+      "title":"ERP",
       "items": [
         {
-          "type": "item",
-          "title": "Work with supply capsule",
-          "uri": "/docs/Good Practices/ERP/Supply-capsule.md"
+          "type":"item",
+          "title":"Connect an ERP",
+          "uri":"/docs/Good Practices/ERP/erp.md"
         }
       ]
     },
     {
-      "type": "group",
-      "title": "Return orders management",
+      "type":"group",
+      "title":"Incoming goods",
       "items": [
         {
-          "type": "item",
-          "title": "Create return order in Shippingbo",
-          "uri": "/docs/Good Practices/Return order/create-return-order.md"
+          "type":"item",
+          "title":"Manage incoming goods",
+          "uri":"/docs/Good Practices/ERP/Supply-capsule.md"
+        }
+      ]
+    },
+    {
+      "type":"group",
+      "title":"Return orders",
+      "items": [
+        {
+          "type":"item",
+          "title":"Create return order in Shippingbo",
+          "uri":"/docs/Good Practices/Return order/create-return-order.md"
+        }
+      ]
+    },
+    {
+      "type":"group",
+      "title":"External WMS",
+      "items": [
+        {
+          "type":"item",
+          "title":"Introduction",
+          "uri":"/docs/Good Practices/External WMS/introduction.md"
         },
         {
-          "type": "item",
-          "title": "Verify products control and restocking",
-          "uri": "/docs/Good Practices/Return order/verify-return-order.md"
+          "type":"item",
+          "title":"Manage orders",
+          "uri":"/docs/Good Practices/External WMS/orders.md"
+        },
+        {
+          "type":"item",
+          "title":"Manage products",
+          "uri":"/docs/Good Practices/External WMS/products.md"
+        },
+        {
+          "type":"item",
+          "title":"Manage stocks",
+          "uri":"/docs/Good Practices/External WMS/stocks.md"
+        },
+        {
+          "type":"item",
+          "title":"Manage shipments",
+          "uri":"/docs/Good Practices/External WMS/shipments.md"
+        },
+        {
+          "type":"item",
+          "title":"Manage incomming goods",
+          "uri":"/docs/Good Practices/External WMS/supply_capsules.md"
         }
       ]
     },
     {
-      "type": "divider",
-      "title": "Old documentation"
+      "type":"group",
+      "title":"Webhooks",
+      "items": [
+        {
+          "type":"item",
+          "title":"Webhook",
+          "uri":"/docs/Webhooks/Webhooks.md"
+        },
+        {
+          "type":"item",
+          "title":"Webhooks by api",
+          "uri":"/docs/Webhooks/webhook-by-api.md"
+        },
+        {
+          "type":"item",
+          "title":"Webhooks configuration",
+          "uri":"https://app.shippingbo.com/#/updateHooks"
+        }
+      ]
     },
     {
-      "type": "item",
-      "title": "Documentation",
-      "uri": "/docs/old-documentation.md"
+      "type":"group",
+      "title":"Tools",
+      "items": [
+        {
+          "type":"item",
+          "title":"Zapier",
+          "uri":"https://zapier.com/apps/shippingbo/integrations"
+        },
+        {
+          "type":"item",
+          "title":"Make",
+          "uri":"https://www.make.com/en/integrations/shippingbo"
+        }
+      ]
     },
     {
-      "type": "divider",
-      "title": "Webhooks"
+      "type":"divider",
+      "title":"Advanced order management"
     },
     {
-      "type": "item",
-      "title": "Webhook",
-      "uri": "/docs/Webhooks/Webhooks.md"
+      "type":"item",
+      "title":"Order splitting",
+      "uri":"/docs/Good Practices/Split/split-order.md"
+    },
+        {
+      "type":"item",
+      "title":"Order searching",
+      "uri":"/docs/Good Practices/Search/search-order.md"
     },
     {
-      "type": "item",
-      "title": "Webhooks configuration",
-      "uri": "https://app.shippingbo.com/#/updateHooks"
+      "type":"divider",
+      "title":"References"
     },
     {
-      "type": "divider",
-      "title": "APIS"
+      "type":"item",
+      "title":"Shippingbo API V1",
+      "uri":"/reference/Shippingbo-bis.yaml"
     },
     {
-      "type": "item",
-      "title": "Shipping API V1",
-      "uri": "/reference/Shipping-API-V1.json"
+      "type":"item",
+      "title":"Oauth API V1",
+      "uri":"/reference/Oauth-API.yaml"
     }
   ]
 }

@@ -3,9 +3,9 @@ stoplight-id: yyk111bjoc3h8
 tags: [ERP, Replenishment]
 ---
 
-# Restock Management
+# Manage incoming goods
 
-Shippingbo allow user to plan restocking of your warehouse in a LMS context or OMS/WMS context.
+Shippingbo allow users to plan restocking of your warehouse in a LMS context or OMS/WMS context.
 
 A planned restocking is materialized by a `SupplyCapsule` in Shippingbo
 
@@ -170,21 +170,77 @@ response = http.request(request)
 puts response.read_body
 ```
 
-If your SupplyCapsule has been correctly send to the selected supplier the state of the record will pass from *waiting* to *dispatched*
+If your SupplyCapsule has been correctly sent to the selected supplier, the state of the record will pass from *waiting* to *dispatched*
 
 <!-- theme: warning -->
-> Note: the dispatching is asynchronous, so the return of the creation will be always waiting, if the dispatch fails the state will pass from *waiting* to *in_trouble*. We actively recommend to implement a [webhook](https://developer.shippingbo.com/docs/api/branches/main/yyk111bjoc3h8-replenishment-management#make-your-system-up-to-date) on it
+> Note: the dispatching is asynchronous, so the return of the creation will always be waiting. If the dispatch fails, the state will pass from *waiting* to *in_trouble*. We actively recommend the implementation of a [webhook](https://developer.shippingbo.com/docs/api/branches/main/yyk111bjoc3h8-replenishment-management#make-your-system-up-to-date) on it
 
 
 ## Make your system up-to-date
 
-As a standard implementation you will link your Shippingbo account to your ERP, CRM, etc.. or your system that manage your restocking.
+As a standard implementation you will link your Shippingbo account to your ERP, CRM, etc.. or your system that manages your restocking.
 
-To do that, you have to create a Webhook on the ressource SupplyCapsule (c.f. [Webhook documentation](https://developer.shippingbo.com/docs/api/branches/main/90c5b4e8466fe-webhook))
+To do that, you have to create a Webhook on the resource's SupplyCapsule (c.f. [Webhook documentation](https://developer.shippingbo.com/docs/api/branches/main/90c5b4e8466fe-webhook))
 
-Once Shippingbo has notified your server you can send notification, integrate it, alert or whatever
+Once Shippingbo has notified your server, you can send the notification, integrate it, send an alert or whatever
 
 ## Update your SupplyCapsule
+
+### Mark as received
+
+To update the state as `reveived` you juste have to pass the new state as following:
+
+```curl
+curl --request PUT \
+  --url https://app.shippingbo.com/supply_capsules/supply_capsule_id \
+  --header 'Content-Type: application/json' \
+  --data '{
+  "state": "received"
+}'
+```
+```php
+<?php
+
+$request = new HttpRequest();
+$request->setUrl('https://app.shippingbo.com/supply_capsules/supply_capsule_id');
+$request->setMethod(HTTP_METH_PUT);
+
+$request->setHeaders([
+  'Content-Type' => 'application/json'
+]);
+
+$request->setBody('{
+  "state": "canceled"
+}');
+
+try {
+  $response = $request->send();
+
+  echo $response->getBody();
+} catch (HttpException $ex) {
+  echo $ex;
+}
+```
+```ruby
+require 'uri'
+require 'net/http'
+require 'openssl'
+
+url = URI("https://app.shippingbo.com/supply_capsules/supply_capsule_id")
+
+http = Net::HTTP.new(url.host, url.port)
+http.use_ssl = true
+http.verify_mode = OpenSSL::SSL::VERIFY_NONE
+
+request = Net::HTTP::Put.new(url)
+request["Content-Type"] = 'application/json'
+request.body = "{\n  \"state\": \"canceled\"\n}"
+
+response = http.request(request)
+puts response.read_body
+```
+
+### Cancel an incoming goods
 
 Sometimes you will need to cancel a SupplyCapsule because your supplier canceled an order, so you have to cancel the SupplyCapsule in Shippingbo. You can do it with a simple request
 
