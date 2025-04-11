@@ -1,0 +1,21 @@
+name: Trigger Dust Agent
+on:
+  [pull_request]:
+    
+jobs:
+  call-dust-agent:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call Dust Agent
+        env:
+          DUST_API_KEY: ${{ secrets.DUST_API_KEY }}
+          WORKSPACE_ID: 791e0325bc
+        run: |
+          curl -X POST "https://api.dust.tt/v1/agents/run" \
+          -H "Authorization: Bearer $DUST_API_KEY" \
+          -H "Content-Type: application/json" \
+          -d '{
+            "workspace_id": "'$WORKSPACE_ID'",
+            "agent_name": "your_agent_name",
+            "message": "Your message to the agent"
+          }'
