@@ -1975,6 +1975,10 @@ components:
 
 
 
+
+
+
+
              List of additional fields
           type: array
           x-stoplight:
@@ -3482,6 +3486,10 @@ components:
           type: string
           x-stoplight:
             id: j417s4a0umaio
+        supplier_name:
+          type: string
+          x-stoplight:
+            id: u8sf0anhxzclp
   securitySchemes:
     API_login:
       description: Your API credential login (deprecated)
@@ -5249,7 +5257,7 @@ paths:
         name: orderId
         required: true
         schema:
-          type: string
+          type: integer
     patch:
       operationId: patch-order-orderId
       parameters: []
@@ -7949,7 +7957,7 @@ paths:
         id: c5z3zauffribd
   /supplier_product_stock_types:
     get:
-      summary: get product stock types
+      summary: Get product stock types
       tags:
         - SupplierProductStockType
       responses:
@@ -7968,8 +7976,13 @@ paths:
         - schema:
             type: number
           in: query
-          name: 'search[joins][supplier_product][product_id__eq]='
+          name: 'search[joins][supplier_product][product_id__eq]'
           description: Search by product
+        - schema:
+            type: string
+          in: query
+          name: 'search[joins][supplier][name__eq]'
+          description: Search by supplier name
       description: Get product stocks by stock types
   /supplier_stock_types:
     get:
@@ -8245,6 +8258,11 @@ paths:
                   type: integer
                   x-stoplight:
                     id: g73phqlf2sakp
+                supplier_stock_type_name:
+                  type: string
+                  x-stoplight:
+                    id: s3320jj05xmcp
+                  description: 'In case both `supplier_stock_type_id` and `supplier_stock_type_name` are specified, priority is given to `supplier_stock_type_id`, while `supplier_stock_type_name` will be ignored.'
                 supply_capsule_items_attributes:
                   type: array
                   items:
